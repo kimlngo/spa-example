@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Code Reader</title>
+</head>
+<body>
+<script type="text/javascript">
+  const urlParams = new URLSearchParams(window.location.search);
+  const authCode = urlParams.get('code');
+  const state = urlParams.get('state');
+  const error = urlParams.get('error');
+  const errorDescription = urlParams.get('error_description');
+
+  if (error) {
+      window.alert("The following error took place:" +  error + ". Description of error:" + errorDescription);
+  } else {
+      window.opener.postAuthorize(state, authCode);
+  }
+  window.close();
+</script>
+</body>
+</html>

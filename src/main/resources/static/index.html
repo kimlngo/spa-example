@@ -5,53 +5,7 @@
     <title>JavaScript Application with PKCE</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
-    <script language="JavaScript">
-        function generateState(length) {
-            let stateValue = "";
-            const alphaNumericCharacters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-            const alphaNumericCharactersLength = alphaNumericCharacters.length;
-            for (let i = 0; i < length; i++) {
-                stateValue += alphaNumericCharacters.charAt(Math.floor(Math.random() * alphaNumericCharactersLength));
-            }
-
-            document.getElementById("stateValue").innerHTML = stateValue;
-        }
-
-        function generateCodeVerifier() {
-            let returnValue = "";
-            let randomByteArray = new Uint8Array(32);
-            window.crypto.getRandomValues(randomByteArray);
-
-            returnValue = base64urlencode(randomByteArray);
-
-            document.getElementById("codeVerifierValue").innerHTML = returnValue;
-        }
-
-        function base64urlencode(sourceValue) {
-            let stringValue = String.fromCharCode.apply(null, sourceValue);
-            let base64Encoded = btoa(stringValue);
-            let base64urlEncoded = base64Encoded.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
-            return base64urlEncoded;
-        }
-
-        async function generateCodeChallenge() {
-            let codeChallengeValue = "";
-            let codeVerifier = document.getElementById("codeVerifierValue").innerHTML;
-
-            if(!codeVerifier) {
-                alert("Please generate Code Verifier first");
-                return;
-            }
-
-            const textEncoder = new TextEncoder('US-ASCII');
-            const encodedValue = textEncoder.encode(codeVerifier);
-            const digest = await window.crypto.subtle.digest("SHA-256", encodedValue);
-
-            codeChallengeValue = base64urlencode(Array.from(new Uint8Array(digest)));
-
-            document.getElementById("codeChallengeValue").innerHTML = codeChallengeValue;
-        }
-    </script>
+    <script src="script.js"></script>
 </head>
 <body>
 
@@ -60,11 +14,15 @@
 <div id="stateValue"></div>
 <div><input type="button" value="Generate State Value" onclick="generateState(30)" /></div>
 
+<br>
 <div id="codeVerifierValue"></div>
 <div><input type="button" value="Generate Code Verifier" onclick="generateCodeVerifier()"/></div>
 
+<br>
 <div id="codeChallengeValue"></div>
 <div><input type="button" value="Generate Code Challenge" onclick="generateCodeChallenge()"/></div>
 
+<br>
+<div><input type="button" value="Get Auth Code" onclick="getAuthCode()"/></div>
 </body>
 </html>
