@@ -33,6 +33,24 @@
             let base64urlEncoded = base64Encoded.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
             return base64urlEncoded;
         }
+
+        async function generateCodeChallenge() {
+            let codeChallengeValue = "";
+            let codeVerifier = document.getElementById("codeVerifierValue").innerHTML;
+
+            if(!codeVerifier) {
+                alert("Please generate Code Verifier first");
+                return;
+            }
+
+            const textEncoder = new TextEncoder('US-ASCII');
+            const encodedValue = textEncoder.encode(codeVerifier);
+            const digest = await window.crypto.subtle.digest("SHA-256", encodedValue);
+
+            codeChallengeValue = base64urlencode(Array.from(new Uint8Array(digest)));
+
+            document.getElementById("codeChallengeValue").innerHTML = codeChallengeValue;
+        }
     </script>
 </head>
 <body>
@@ -44,6 +62,9 @@
 
 <div id="codeVerifierValue"></div>
 <div><input type="button" value="Generate Code Verifier" onclick="generateCodeVerifier()"/></div>
+
+<div id="codeChallengeValue"></div>
+<div><input type="button" value="Generate Code Challenge" onclick="generateCodeChallenge()"/></div>
 
 </body>
 </html>
