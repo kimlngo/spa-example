@@ -4,9 +4,27 @@
     <meta charset="UTF-8">
     <title>JavaScript Application with PKCE</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <script language="JavaScript">
+        function generateState(length) {
+            let stateValue = "";
+            const alphaNumericCharacters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            const alphaNumericCharactersLength = alphaNumericCharacters.length;
+            for (let i = 0; i < length; i++) {
+                stateValue += alphaNumericCharacters.charAt(Math.floor(Math.random() * alphaNumericCharactersLength));
+            }
+
+            document.getElementById("stateValue").innerHTML = stateValue;
+        }
+
+    </script>
 </head>
 <body>
 
 <h1>Index Page</h1>
+
+<div id="stateValue"></div>
+<div><input type="button" value="Generate State Value" onclick="generateState(30)" /></div>
+
 </body>
 </html>
